@@ -3,7 +3,7 @@ virtual-study-room-Website
 
 To create a fully professional and visually appealing website that is secure, scalable, and highly available, we need to make several enhancements to the initial setup. This includes using modern web development practices, integrating Bootstrap for responsive design, and ensuring robust deployment practices.
 
-et's enhance the setup to include Jenkins for CI/CD, SonarQube for code quality checks, and Nexus for artifact management, alongside Docker implementation. This comprehensive setup will cover development, testing, and deployment processes, ensuring a professional and scalable deployment for the Virtual Study Room application.
+Let's enhance the setup to include Jenkins for CI/CD, SonarQube for code quality checks, and Nexus for artifact management, alongside Docker implementation. This comprehensive setup will cover development, testing, and deployment processes, ensuring a professional and scalable deployment for the Virtual Study Room application.
 
 ### Complete Project Setup
 
