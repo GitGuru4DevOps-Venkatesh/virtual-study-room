@@ -611,3 +611,114 @@ pipeline {
 ```
 
 This pipeline script assumes that your Jenkins agent has `kubectl` installed and configured to access your Kubernetes cluster. The deployment and service YAML files should be properly configured to deploy your application.
+
+-------
+
+When setting up a Kubernetes cluster manually on a GCP Ubuntu server, you do not need to create a Kubernetes cluster in the GCP console. Instead, you will manually install and configure Kubernetes on your virtual machines (VMs). Here’s a detailed guide on how to manually set up a Kubernetes cluster on a GCP Ubuntu server:
+
+### Prerequisites
+1. **GCP Account and Project:** Ensure you have a Google Cloud Platform account and a project set up.
+2. **Ubuntu VM:** You should have one or more Ubuntu VMs set up on GCP.
+
+### Steps to Set Up Kubernetes Manually
+
+#### 1. Provision Ubuntu VMs
+Create a few VMs on GCP. One VM will act as the master node, and the other VMs will be worker nodes. Ensure each VM meets the minimum hardware requirements for running Kubernetes.
+
+#### 2. SSH into the Master Node
+
+Connect to your master node using SSH.
+
+```sh
+gcloud compute ssh <your-master-node>
+```
+
+#### 3. Install Docker on All Nodes
+
+```sh
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install -y docker-ce
+sudo systemctl enable docker
+sudo systemctl start docker
+```
+
+#### 4. Install Kubernetes Components (kubelet, kubeadm, kubectl) on All Nodes
+
+Add the Kubernetes repository:
+
+```sh
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt-get update
+```
+
+Install `kubelet`, `kubeadm`, and `kubectl`:
+
+```sh
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+```
+
+#### 5. Disable Swap on All Nodes
+
+```sh
+sudo swapoff -a
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+```
+
+#### 6. Initialize the Master Node
+
+On the master node, initialize the Kubernetes cluster:
+
+```sh
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+```
+
+Set up the kubeconfig for the default user:
+
+```sh
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+#### 7. Install a Pod Network Add-on
+
+Using Flannel as an example:
+
+```sh
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+```
+
+#### 8. Join Worker Nodes to the Cluster
+
+On each worker node, run the command given by `kubeadm init` on the master node. It looks something like this:
+
+```sh
+sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>
+```
+
+You can retrieve the join command from the master node if you did not save it:
+
+```sh
+kubeadm token create --print-join-command
+```
+
+#### 9. Verify the Cluster
+
+On the master node, check the status of the nodes:
+
+```sh
+kubectl get nodes
+```
+
+This should list all your nodes (master and workers) with the status "Ready".
+
+### Summary
+
+By following these steps, you manually set up a Kubernetes cluster on your GCP Ubuntu VMs without using GKE. This setup allows you to have full control over your Kubernetes environment. If you encounter any issues or need further assistance, feel free to ask!
