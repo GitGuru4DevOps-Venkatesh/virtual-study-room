@@ -3,7 +3,7 @@ virtual-study-room-Website
 
 To create a fully professional and visually appealing website that is secure, scalable, and highly available, we need to make several enhancements to the initial setup. This includes using modern web development practices, integrating Bootstrap for responsive design, and ensuring robust deployment practices.
 
-Certainly! Let's enhance the setup to include Jenkins for CI/CD, SonarQube for code quality checks, and Nexus for artifact management, alongside Docker implementation. This comprehensive setup will cover development, testing, and deployment processes, ensuring a professional and scalable deployment for the Virtual Study Room application.
+et's enhance the setup to include Jenkins for CI/CD, SonarQube for code quality checks, and Nexus for artifact management, alongside Docker implementation. This comprehensive setup will cover development, testing, and deployment processes, ensuring a professional and scalable deployment for the Virtual Study Room application.
 
 ### Complete Project Setup
 
@@ -329,8 +329,8 @@ spec:
    - Configure `kubectl` to interact with your EKS cluster.
 
 By following these detailed steps and configurations, you will have a highly professional, secure, and scalable Virtual Study Room application. This setup ensures code quality with SonarQube, manages artifacts with Nexus, and automates the CI/CD pipeline with Jenkins, deploying seamlessly to an EKS cluster.
-
-Certainly! Here's how you can set up Kubernetes on your Ubuntu server in Google Cloud Platform (GCP) and then configure EKS (Amazon Elastic Kubernetes Service) to deploy your application:
+---------------------------
+***We can set up Kubernetes on your Ubuntu server in Google Cloud Platform (GCP) and then configure EKS (Amazon Elastic Kubernetes Service) to deploy your application:***
 
 ### Kubernetes Setup on GCP Ubuntu Server
 
