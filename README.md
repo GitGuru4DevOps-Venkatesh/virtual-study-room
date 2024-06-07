@@ -320,7 +320,9 @@ spec:
      docker run -d -p 8081:8081 --name nexus sonatype/nexus3
      ```
    - Set up Docker repository in Nexus.
-
+    ```sh
+     docker exec -it nexus cat /nexus-data/admin.password
+    ```
 4. **Docker Setup**:
    - Ensure Docker is installed on your Jenkins server.
 
